@@ -79,7 +79,7 @@ frIndexes = fftValues.argsort()[-4:][::-1] # get the index of the 5 values
 print(frIndexes)
 
 # get the frequencies
-#print(frequencies[frIndexes])
+print(frequencies[frIndexes])
 
 # Ex. 1. g)
 # 26-05-2014 Monday -> 15340

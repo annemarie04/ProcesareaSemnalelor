@@ -223,6 +223,8 @@ fft_groups = []
 for group in groups:
     fft_groups.append(np.fft.fft(np.array(group)))
 
+# fft_groups = fft_groups[: N // 2]
+
 spectogram = np.zeros((len(groups), len(groups[0])))
 
 # Create the spectogram
@@ -231,7 +233,7 @@ for i in range(len(fft_groups)):
         spectogram[i][j] = abs(fft_groups[i][j])
 
 # Display the spectogram
-plt.imshow(spectogram.T, norm="log")
+plt.imshow(spectogram.T, norm='log')
 plt.savefig('ex6.pdf', format='pdf')
 plt.savefig('ex6.png', format='png')
 
