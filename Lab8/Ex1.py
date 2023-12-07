@@ -66,15 +66,15 @@ plt.savefig('Ex1_b.pdf', format='pdf')
 
 # c)
 # Parametrii pentru modelul AR
-lag = 10  # Dimensiunea modelului AR
-train_data = serieDeTimp[:-lag]  # Datele de antrenament
+dim_p = 10  # Dimensiunea modelului AR
+train_data = serieDeTimp[:-dim_p]  # Datele de antrenament
 
 # Model AR
-model = AutoReg(train_data, lags = lag)
+model = AutoReg(train_data, lags = dim_p)
 model_fit = model.fit()
 
 # Predicții folosind modelul AR
-predictions = model_fit.predict(start = lag, end = len(serieDeTimp) - 1)
+predictions = model_fit.predict(start = dim_p, end = len(serieDeTimp) - 1)
 
 # Plot
 plt.figure(figsize = (8, 4))
@@ -90,27 +90,27 @@ plt.savefig('Ex1_c.png', format='png')
 plt.savefig('Ex1_c.pdf', format='pdf')
 
 # d)
-best_lag = 0
-best_horizon = 0
-best_rmse = 0
+best_dim_p = 0
+best_horizon_m = 0
+best_rmse = float('inf')
 
 train_data = serieDeTimp[:-50]  # Datele de antrenament
 test_data = serieDeTimp[-50:] # Datele de test
 
-for lag in (1, 50):
-    for horizon in (1, 50):
-        model = AutoReg(train_data, lags=lag)
+for dim_p in (1, 50):
+    for horizon_m in (1, 50):
+        model = AutoReg(train_data, lags = dim_p)
         model_fit = model.fit()
 
-        predictions = model_fit.predict(start = len(train_data), end = len(train_data) + horizon - 1)
+        predictions = model_fit.predict(start = len(train_data), end = len(train_data) + horizon_m - 1)
 
-        rmse = np.sqrt(mean_squared_error(test_data[:horizon], predictions))
+        rmse = np.sqrt(mean_squared_error(test_data[:horizon_m], predictions))
 
         # Actualizarea cei mai buni parametrii
         if rmse < best_rmse:
             best_rmse = rmse
-            best_lag = lag
-            best_horizon = horizon
+            best_dim_p = dim_p
+            best_horizon_m = horizon_m
 
-print("Best lag:" + str(best_lag))
-print("Best horizon:" + str(best_lag))
+print("Best lag:" + str(best_dim_p))
+print("Best horizon:" + str(best_horizon_m))
