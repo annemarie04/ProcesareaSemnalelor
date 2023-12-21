@@ -1,7 +1,7 @@
 from cmath import inf
 import numpy as np
 import matplotlib.pyplot as plt
-import statsmodels.tsa as sm
+from statsmodels.tsa.arima.model import ARIMA
 
 N = 1000
 time = np.linspace(1, 1000, num = 1000)
@@ -27,8 +27,29 @@ def SerieDeTimp():
 serieDeTimp = SerieDeTimp()
 eroare = np.random.rand(1000)
 qOrizont = 5
+m = 100
 
-# model_ma = sm.arma_process(serieDeTimp, order=(0, qOrizont))
-# result = model_ma.fit()
-sm.ArmaProcess.arma2ma(lags=None)
-# print(result.summary())
+mean = np.sum(serieDeTimp) / 700
+sample = np.zeros(m)
+Y = np.zeros((m, qOrizont))
+
+for i in range(m):
+    sample[i] = serieDeTimp[700 - m + i] - serieDeTimp[qOrizont + i] - mean
+
+
+
+for i in range(m):
+    Y[i] = eroare[i : i + qOrizont]
+
+teta = np.linalg.lstsq(Y, sample, rcond=None)[0]
+print(teta)
+
+# Ex. 4
+ARMA = ARIMA(serieDeTimp[:700],
+             order=([p for p in range(21)], 0, [q for q in range(21)]),
+             trend = 'ct')
+ARMA = ARMA.fit()
+predictions = ARMA.forecast(300)
+
+eroare = np.mean((predictions - serieDeTimp[700: 1000]) **2 )
+print(eroare)
