@@ -51,5 +51,5 @@ ARMA = ARIMA(serieDeTimp[:700],
 ARMA = ARMA.fit()
 predictions = ARMA.forecast(300)
 
-eroare = np.mean((predictions - serieDeTimp[700: 1000]) **2 )
+eroare = np.mean((predictions - serieDeTimp[700: 1000]) ** 2)
 print(eroare)
